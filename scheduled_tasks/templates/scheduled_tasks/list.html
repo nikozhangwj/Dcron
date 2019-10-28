@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card tasks">
+                <div class="card-header">
+                    <h4>Scheduled Tasks</h4>
+                    <!--<div class="card-header-right-icon">
+                        <ul>
+                            <li class="card-close" data-dismiss="alert"><i class="ti-close"></i></li>
+                        </ul>
+                    </div>-->
+                    {% if error %}
+                        <div class="alert alert-warning alert-dismissable">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+                            <strong>Error!</strong> {{ error }}
+                        </div>
+                    {% endif %}
+                    <div style="float: right;">
+                        <!--<label for="id_search">search</label>
+                        <input type="text" id="id_search">-->
+                        <button type="button" class="btn btn-info btn-add"><i class="ti-plus"></i>Add new scheduled task</button>
+                    </div>
+
+                </div>
+                <form class="action-form" method="post">
+                {% csrf_token %}
+                    <div class="actions">
+                        <div class="form-group col-sm-2">
+                            <label for="id_action">Action:</label>
+                            <select class="" name="action" id="id_action">
+                                <option value="">------</option>
+                                <option value="delete">delete</option>
+                                <option value="enable">enable</option>
+                                <option value="disable">disable</option>
+                                <option value="run">run</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-action" type="submit">go</button>
+                    </div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <td>定时任务</td>
+                                <td>任务名称</td>
+                                <td>任务状态</td>
+                                <td>上次执行时间</td>
+                                <td>操作</td>
+                                <td></td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for task in scheduled_tasks %}
+                            <tr>
+                                {% if task.interval %}
+                                    <td><a href="{% url 'scheduled_tasks:scheduled_tasks_update' pk=task.id %}">{{ task.name }}:{{ task.interval }}</a></td>
+                                {% elif task.crontab %}
+                                <td><a href="{% url 'scheduled_tasks:scheduled_tasks_update' pk=task.id %}">{{ task.name }}:{{ task.crontab }}</a></td>
+                                {% elif task.solar %}
+                                <td><a href="{% url 'scheduled_tasks:scheduled_tasks_update' pk=task.id %}">{{ task.name }}:{{ task.solar }}</a></td>
+                                {% endif %}
+                                <td>{{ task.task }}</td>
+                                {% if task.enabled %}
+                                    <td><i class="ti-check"></i></td>
+                                {% else %}
+                                    <td><i class="ti-close"></i></td>
+                                {% endif %}
+                                <td>{{ task.last_run_at }}</td>
+                                <td>
+                                    <button class="btn btn-primary">功能1</button>
+                                    <button class="btn btn-primary">功能2</button>
+                                </td>
+                                <td class="action-checkbox">
+                                    <input class="action-select" type="checkbox" name="_select_action" value="{{ task.id }}">
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
