@@ -93,13 +93,13 @@ def start_gunicorn():
         '-w', str(WORKERS),
         '--max-requests', '4096',
         '--access-logformat', log_format,
+        '--access-logfile', log_file,
         '-p', pid_file,
     ]
 
     if DAEMON:
         cmd.extend([
             '--daemon',
-            '--access-logfile', log_file
         ])
     else:
         cmd.extend([
@@ -128,10 +128,10 @@ def start_celery():
         '-l', 'INFO',
         '--pidfile', pid_file,
         '--autoscale', '20,4',
+        '--logfile', os.path.join(LOG_DIR, 'celery.log'),
     ]
     if DAEMON:
         cmd.extend([
-            '--logfile', os.path.join(LOG_DIR, 'celery.log'),
             '--detach',
         ])
     p = subprocess.Popen(cmd, stdout=sys.stdout, stderr=sys.stderr, cwd=BASE_DIR)
@@ -155,11 +155,11 @@ def start_beat():
         '--pidfile', pid_file,
         '-l', 'INFO',
         '--scheduler', scheduler,
-        '--max-interval', '60'
+        '--max-interval', '60',
+        '--logfile', log_file,
     ]
     if DAEMON:
         cmd.extend([
-            '--logfile', log_file,
             '--detach',
         ])
     p = subprocess.Popen(cmd, stdout=sys.stdout, stderr=sys.stderr, cwd=BASE_DIR)

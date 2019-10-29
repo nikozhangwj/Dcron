@@ -2,7 +2,7 @@ import logging
 from datetime import datetime, date, timedelta
 from celery import current_app
 from django.utils.translation import ugettext_lazy as _
-from django_celery_beat.models import PeriodicTask
+from django_celery_beat.models import PeriodicTask, PeriodicTasks
 from kombu.utils.json import loads
 
 logger = logging.getLogger('scheduled_tasks')
@@ -36,6 +36,7 @@ def enable_scheduled_tasks(select_list=None):
     try:
         queryset = PeriodicTask.objects.filter(id__in=select_list)
         queryset.update(enabled=True)
+        PeriodicTasks.update_changed()
         return True
     except BaseException as error:
         logger.error(str(error))
@@ -46,6 +47,7 @@ def disable_scheduled_tasks(select_list=None):
     try:
         queryset = PeriodicTask.objects.filter(id__in=select_list)
         queryset.update(enabled=False)
+        PeriodicTasks.update_changed()
         return True
     except BaseException as error:
         logger.error(str(error))

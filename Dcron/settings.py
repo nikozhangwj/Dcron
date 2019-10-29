@@ -84,7 +84,7 @@ DATABASES = {
         'NAME': 'dcron',
         'USER': 'dcron',
         'PASSWORD': 'Dcron@123!',
-        'HOST': '10.128.1.197',
+        'HOST': '127.0.0.1',
         'PORT': '3306',
     }
 }
@@ -112,7 +112,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'zh-hans'
 
 TIME_ZONE = 'Asia/Shanghai'
 
@@ -127,13 +127,16 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
+STATIC_ROOT = os.path.join(BASE_DIR, "data", "static")
 STATIC_DIR = os.path.join(BASE_DIR, "data", "static")
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "data", "static"),
 )
 
 LOG_FILE_DIR = os.path.join(BASE_DIR, "logs/")
+
+if not os.path.isdir(LOG_FILE_DIR):
+    os.makedirs(LOG_FILE_DIR)
 
 LOGGING = {
     'version': 1,
