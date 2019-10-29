@@ -1,0 +1,14 @@
+celery==4.1.0
+Django==2.1.7
+django-celery-beat==1.4.0
+django-redis-cache==1.7.1
+django-redis-sessions==0.6.1
+django-rest-swagger==2.1.2
+djangorestframework==3.9.4
+djangorestframework-bulk==0.2.1
+flower==0.9.3
+gunicorn==19.9.0
+PyMySQL==0.9.3
+pytz==2018.3
+redis==2.10.6
+requests==2.22.0
